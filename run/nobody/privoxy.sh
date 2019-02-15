@@ -43,7 +43,8 @@ if [[ "${privoxy_running}" == "false" ]]; then
 	while [[ $(netstat -lnt | awk "\$6 == \"LISTEN\" && \$4 ~ \".8118\"") == "" ]]; do
 		sleep 0.1
 	done
-
+	
+	echo "[info] Privoxy process listening on port 8118"
 fi
 
 # set privoxy ip to current vpn ip (used when checking for changes on next run)
