@@ -16,8 +16,9 @@ if [[ "${privoxy_running}" == "false" ]]; then
 			retry_count=$((retry_count-1))
 			if [ "${retry_count}" -eq "0" ]; then
 
-				echo "[warn] Wait for Privoxy process to start aborted"
-				break
+				echo "[warn] Wait for Privoxy process to start aborted, too many retries"
+				echo "[warn] Showing output from command before exit..."
+				timeout 10 /usr/bin/privoxy /config/privoxy/config ; exit 1
 
 			else
 
@@ -43,8 +44,9 @@ if [[ "${privoxy_running}" == "false" ]]; then
 	while [[ $(netstat -lnt | awk "\$6 == \"LISTEN\" && \$4 ~ \".8118\"") == "" ]]; do
 		sleep 0.1
 	done
-	
+
 	echo "[info] Privoxy process listening on port 8118"
+
 fi
 
 # set privoxy ip to current vpn ip (used when checking for changes on next run)
