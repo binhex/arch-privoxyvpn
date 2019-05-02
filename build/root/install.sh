@@ -106,6 +106,10 @@ else
 	export VPN_ENABLED="yes"
 fi
 
+# env var used by other *vpn images, we always want privoxy enabled 
+# for this docker image so hard set it to yes.
+export ENABLE_PRIVOXY="yes"
+
 if [[ $VPN_ENABLED == "yes" ]]; then
 
 	# create directory to store openvpn config files
