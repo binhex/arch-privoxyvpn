@@ -1,21 +1,5 @@
 #!/bin/bash
 
-mkdir -p /config/privoxy
-
-if [[ ! -f "/config/privoxy/config" ]]; then
-
-	echo "[info] Configuring Privoxy..."
-	cp -R /etc/privoxy/ /config/
-
-	sed -i -e "s~confdir /etc/privoxy~confdir /config/privoxy~g" /config/privoxy/config
-	sed -i -e "s~logdir /var/log/privoxy~logdir /config/privoxy~g" /config/privoxy/config
-	sed -i -e "s~listen-address.*~listen-address :8118~g" /config/privoxy/config
-
-fi
-
-# temporary hack - remove april 1st 2019
-sed -i -e "s~listen-address.*~listen-address :8118~g" /config/privoxy/config
-
 # while loop to check ip and port
 while true; do
 
