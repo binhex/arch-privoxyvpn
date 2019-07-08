@@ -9,11 +9,8 @@ while true; do
 
 	if [[ "${VPN_ENABLED}" == "yes" ]]; then
 
-		# run script to check iptables chain policy is in place (will block until configured)
-		source /home/nobody/checkiptables.sh
-
-		# run script to check ip is valid for tunnel device (will block until valid)
-		source /home/nobody/getvpnip.sh
+		# run script to get all required info
+		source /home/nobody/preruncheck.sh
 
 		# if vpn_ip is not blank then run, otherwise log warning
 		if [[ ! -z "${vpn_ip}" ]]; then
