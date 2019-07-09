@@ -253,7 +253,7 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 		export VPN_OPTIONS=""
 	fi
 
-	export RUN_UP_SCRIPT="no"
+	export APPLICATION="privoxy"
 
 fi
 
