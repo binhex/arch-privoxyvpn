@@ -75,7 +75,7 @@ EOF
 sed -i '/# PERMISSIONS_PLACEHOLDER/{
     s/# PERMISSIONS_PLACEHOLDER//g
     r /tmp/permissions_heredoc
-}' init.sh
+}' /usr/local/bin/init.sh
 rm /tmp/permissions_heredoc
 
 # env vars
@@ -263,7 +263,7 @@ EOF
 sed -i '/# ENVVARS_PLACEHOLDER/{
     s/# ENVVARS_PLACEHOLDER//g
     r /tmp/envvars_heredoc
-}' init.sh
+}' /usr/local/bin/init.sh
 rm /tmp/envvars_heredoc
 
 # cleanup
