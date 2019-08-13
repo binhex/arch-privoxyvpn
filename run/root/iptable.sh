@@ -39,7 +39,7 @@ for lan_network_item in "${lan_network_list[@]}"; do
 	# strip whitespace from start and end of lan_network_item
 	lan_network_item=$(echo "${lan_network_item}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 
-	echo "[info] Adding ${lan_network_item} as route via docker "${docker_interface}""
+	echo "[info] Adding ${lan_network_item} as route via docker ${docker_interface}"
 	ip route add "${lan_network_item}" via "${DEFAULT_GATEWAY}" dev "${docker_interface}"
 
 done
@@ -57,9 +57,6 @@ iptables -P INPUT DROP
 
 # set policy to drop ipv6 for input
 ip6tables -P INPUT DROP 1>&- 2>&-
-
-# accept input to tunnel adapter
-iptables -A INPUT -i "${VPN_DEVICE_TYPE}" -j ACCEPT
 
 # accept input to/from docker containers (172.x range is internal dhcp)
 iptables -A INPUT -s "${docker_network_cidr}" -d "${docker_network_cidr}" -j ACCEPT
@@ -83,6 +80,9 @@ iptables -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
 
 # accept input to local loopback
 iptables -A INPUT -i lo -j ACCEPT
+
+# accept input to tunnel adapter
+iptables -A INPUT -i "${VPN_DEVICE_TYPE}" -j ACCEPT
 
 # forward iptable rules
 ###
@@ -130,8 +130,8 @@ iptables -A OUTPUT -o "${VPN_DEVICE_TYPE}" -j ACCEPT
 
 echo "[info] iptables defined as follows..."
 echo "--------------------"
-iptables -S 2>&1 | tee /tmp/checkiptables
-chmod +r /tmp/checkiptables
+iptables -S 2>&1 | tee /tmp/getiptables
+chmod +r /tmp/getiptables
 echo "--------------------"
 
 # change iptable 'tcp' to openvpn config compatible 'tcp-client' (this file is sourced)
