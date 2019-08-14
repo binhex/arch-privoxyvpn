@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# source script to get currently assigned vpn ip (vpn_ip)
-source /root/getvpnip.sh
-
 if [[ "${ENABLE_SOCKS}" == "yes" ]];then
 
 	echo "[info] Attempting to start microsocks..."

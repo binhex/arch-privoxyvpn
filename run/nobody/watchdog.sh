@@ -5,6 +5,7 @@ while true; do
 
 	# reset triggers to negative values
 	privoxy_running="false"
+	microsocks_running="false"
 	ip_change="false"
 
 	if [[ "${VPN_ENABLED}" == "yes" ]]; then
@@ -33,6 +34,25 @@ while true; do
 				source /home/nobody/privoxy.sh
 
 			fi
+			
+			# check if microsocks is running, if not then skip shutdown of process
+			if ! pgrep -fa "/usr/local/bin/microsocks" > /dev/null; then
+
+				echo "[info] microsocks not running"
+
+			else
+
+				# mark microsocks as running
+				microsocks_running="true"
+
+			fi
+
+			if [[ "${microsocks_running}" == "false" ]]; then
+
+				# run script to start microsocks
+				source /home/nobody/microsocks.sh
+
+			fi
 
 		else
 
@@ -49,6 +69,16 @@ while true; do
 
 			# run script to start privoxy
 			source /home/nobody/privoxy.sh
+
+		fi
+
+		# check if microsocks is running, if not then start via microsocks.sh
+		if ! pgrep -fa "/usr/local/bin/microsocks" > /dev/null; then
+
+			echo "[info] microsocks not running"
+
+			# run script to start microsocks
+			source /home/nobody/microsocks.sh
 
 		fi
 
