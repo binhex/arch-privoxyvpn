@@ -1,21 +1,24 @@
 **Application**
 
 [Privoxy](http://www.privoxy.org/)  
+[microsocks] (https://github.com/rofl0r/microsocks)  
 [OpenVPN](https://openvpn.net/)  
 
 **Description**
 
-Privoxy is a free non-caching web proxy with filtering capabilities for enhancing privacy, manipulating cookies and modifying web page data and HTTP headers before the page is rendered by the browser. Privoxy is a "privacy enhancing proxy", filtering web pages and removing advertisements. Privoxy can be customized by users, for both stand-alone systems and multi-user networks. Privoxy can be chained to other proxies and is frequently used in combination with Squid and can be used to bypass Internet censorship.
+Privoxy is a free non-caching web proxy with filtering capabilities for enhancing privacy, manipulating cookies and modifying web page data and HTTP headers before the page is rendered by the browser. Privoxy is a "privacy enhancing proxy", filtering web pages and removing advertisements. Privoxy can be customized by users, for both stand-alone systems and multi-user networks. Privoxy can be chained to other proxies and is frequently used in combination with Squid and can be used to bypass Internet censorship. microsocks is a SOCKS5 service that you can run on your remote boxes to tunnel connections through them, if for some reason SSH doesn't cut it for you. It's very lightweight, and very light on resources too: for every client, a thread with a stack size of 8KB is spawned. the main process basically doesn't consume any resources at all. The only limits are the amount of file descriptors and the RAM.
 
 **Build notes**
 
 Latest stable Privoxy release from Arch Linux repo.
+Latest stable microsocks release from GitHub.
 
 **Usage**
 ```
 docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
+    -p 9118:9118 \
     --name=<container name> \
     -v <path for config files>:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -26,6 +29,10 @@ docker run -d \
     -e VPN_OPTIONS=<additional openvpn cli options> \
     -e LAN_NETWORK=<lan ipv4 network>/<cidr notation> \
     -e NAME_SERVERS=<name server ip(s)> \
+    -e SOCKS_USER=<socks username> \
+    -e SOCKS_PASS=<socks password> \
+    -e ENABLE_SOCKS=<yes|no> \
+    -e ENABLE_PRIVOXY=<yes|no> \
     -e DEBUG=<true|false> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
@@ -35,15 +42,22 @@ docker run -d \
 &nbsp;
 Please replace all user variables in the above command defined by <> with the correct values.
 
-**Access application**
+**Access Privoxy**
 
 `http://<host ip>:8118`
+
+**Access microsocks**
+
+`<host ip>:9118`
+
+default credentials: admin/socks
 
 **PIA example**
 ```
 docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
+    -p 9118:9118 \
     --name=privoxyvpn \
     -v /root/docker/config:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -53,6 +67,10 @@ docker run -d \
     -e VPN_PROV=pia \
     -e LAN_NETWORK=192.168.1.0/24 \
     -e NAME_SERVERS=209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1 \
+    -e SOCKS_USER=admin \
+    -e SOCKS_PASS=socks \
+    -e ENABLE_SOCKS=yes \
+    -e ENABLE_PRIVOXY=yes \
     -e DEBUG=false \
     -e UMASK=000 \
     -e PUID=0 \
@@ -77,6 +95,7 @@ file by using the following link https://airvpn.org/generator/
 docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
+    -p 9118:9118 \
     --name=privoxyvpn \
     -v /root/docker/config:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -84,6 +103,10 @@ docker run -d \
     -e VPN_PROV=airvpn \
     -e LAN_NETWORK=192.168.1.0/24 \
     -e NAME_SERVERS=209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1 \
+    -e SOCKS_USER=admin \
+    -e SOCKS_PASS=socks \
+    -e ENABLE_SOCKS=yes \
+    -e ENABLE_PRIVOXY=yes \
     -e DEBUG=false \
     -e UMASK=000 \
     -e PUID=0 \

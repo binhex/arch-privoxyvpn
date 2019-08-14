@@ -3,11 +3,23 @@
 # exit script if return code != 0
 set -e
 
+# build scripts
+####
+
+# download build scripts from github
+curl --connect-timeout 5 --max-time 600 --retry 5 --retry-delay 0 --retry-max-time 60 -o /tmp/scripts-master.zip -L https://github.com/binhex/scripts/archive/master.zip
+
+# unzip build scripts
+unzip /tmp/scripts-master.zip -d /tmp
+
+# move shell scripts to /root
+mv /tmp/scripts-master/shell/arch/docker/*.sh /usr/local/bin/
+
 # pacman packages
 ####
 
 # define pacman packages
-pacman_packages="privoxy"
+pacman_packages="base-devel privoxy"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -22,6 +34,16 @@ aur_packages=""
 
 # call aur install script (arch user repo)
 source aur.sh
+
+# github release - microsocks
+####
+
+# download microsocks
+github.sh -df github-microsocks.zip -dp "/tmp" -ep "/tmp/extracted" -go "rofl0r" -gr "microsocks" -rt "source"
+
+# make and install microsocks
+cd /tmp/extracted/microsocks*
+make install
 
 # container perms
 ####
@@ -106,9 +128,41 @@ else
 	export VPN_ENABLED="yes"
 fi
 
-# env var used by other *vpn images, we always want privoxy enabled 
-# for this docker image so hard set it to yes.
-export ENABLE_PRIVOXY="yes"
+export ENABLE_SOCKS=$(echo "${ENABLE_SOCKS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${ENABLE_SOCKS}" ]]; then
+	echo "[info] ENABLE_SOCKS defined as '${ENABLE_SOCKS}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[warn] ENABLE_SOCKS not defined (via -e ENABLE_SOCKS), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
+	export ENABLE_SOCKS="no"
+fi
+
+if [[ "${ENABLE_SOCKS}" == "yes" ]]; then
+
+	export SOCKS_USER=$(echo "${SOCKS_USER}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	if [[ ! -z "${SOCKS_USER}" ]]; then
+		echo "[info] SOCKS_USER defined as '${SOCKS_USER}'" | ts '%Y-%m-%d %H:%M:%.S'
+	else
+		echo "[warn] SOCKS_USER not defined (via -e SOCKS_USER), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
+		export SOCKS_USER="admin"
+	fi
+
+	export SOCKS_PASS=$(echo "${SOCKS_PASS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	if [[ ! -z "${SOCKS_PASS}" ]]; then
+		echo "[info] SOCKS_PASS defined as '${SOCKS_PASS}'" | ts '%Y-%m-%d %H:%M:%.S'
+	else
+		echo "[warn] SOCKS_PASS not defined (via -e SOCKS_PASS), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
+		export SOCKS_PASS="socks"
+	fi
+
+fi
+
+export ENABLE_PRIVOXY=$(echo "${ENABLE_PRIVOXY}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${ENABLE_PRIVOXY}" ]]; then
+	echo "[info] ENABLE_PRIVOXY defined as '${ENABLE_PRIVOXY}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[warn] ENABLE_PRIVOXY not defined (via -e ENABLE_PRIVOXY), defaulting to 'yes'" | ts '%Y-%m-%d %H:%M:%.S'
+	export ENABLE_PRIVOXY="yes"
+fi
 
 if [[ $VPN_ENABLED == "yes" ]]; then
 
@@ -266,10 +320,5 @@ sed -i '/# ENVVARS_PLACEHOLDER/{
 }' /usr/local/bin/init.sh
 rm /tmp/envvars_heredoc
 
-# cleanup
-yes|pacman -Scc
-pacman --noconfirm -Rns $(pacman -Qtdq) 2> /dev/null || true
-rm -rf /usr/share/locale/*
-rm -rf /usr/share/man/*
-rm -rf /usr/share/gtk-doc/*
-rm -rf /tmp/*
+# call cleanup script
+cleanup.sh
