@@ -1,7 +1,7 @@
 **Application**
 
 [Privoxy](http://www.privoxy.org/)  
-[microsocks] (https://github.com/rofl0r/microsocks)  
+[microsocks](https://github.com/rofl0r/microsocks)  
 [OpenVPN](https://openvpn.net/)  
 
 **Description**
@@ -10,7 +10,7 @@ Privoxy is a free non-caching web proxy with filtering capabilities for enhancin
 
 **Build notes**
 
-Latest stable Privoxy release from Arch Linux repo.
+Latest stable Privoxy release from Arch Linux repo.  
 Latest stable microsocks release from GitHub.
 
 **Usage**
