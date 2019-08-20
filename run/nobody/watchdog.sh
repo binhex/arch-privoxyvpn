@@ -16,41 +16,49 @@ while true; do
 		# if vpn_ip is not blank then run, otherwise log warning
 		if [[ ! -z "${vpn_ip}" ]]; then
 
-			# check if privoxy is running, if not then skip shutdown of process
-			if ! pgrep -fa "/usr/bin/privoxy" > /dev/null; then
+			if [[ "${ENABLE_PRIVOXY}" == "yes" ]]; then
 
-				echo "[info] Privoxy not running"
+				# check if privoxy is running, if not then skip shutdown of process
+				if ! pgrep -fa "/usr/bin/privoxy" > /dev/null; then
 
-			else
+					echo "[info] Privoxy not running"
 
-				# mark as privoxy as running
-				privoxy_running="true"
+				else
 
-			fi
+					# mark as privoxy as running
+					privoxy_running="true"
 
-			if [[ "${privoxy_running}" == "false" ]]; then
+				fi
 
-				# run script to start privoxy
-				source /home/nobody/privoxy.sh
+				if [[ "${privoxy_running}" == "false" ]]; then
 
-			fi
-			
-			# check if microsocks is running, if not then skip shutdown of process
-			if ! pgrep -fa "/usr/local/bin/microsocks" > /dev/null; then
+					# run script to start privoxy
+					source /home/nobody/privoxy.sh
 
-				echo "[info] microsocks not running"
-
-			else
-
-				# mark microsocks as running
-				microsocks_running="true"
+				fi
 
 			fi
 
-			if [[ "${microsocks_running}" == "false" ]]; then
+			if [[ "${ENABLE_SOCKS}" == "yes" ]]; then
 
-				# run script to start microsocks
-				source /home/nobody/microsocks.sh
+				# check if microsocks is running, if not then skip shutdown of process
+				if ! pgrep -fa "/usr/local/bin/microsocks" > /dev/null; then
+
+					echo "[info] microsocks not running"
+
+				else
+
+					# mark microsocks as running
+					microsocks_running="true"
+
+				fi
+
+				if [[ "${microsocks_running}" == "false" ]]; then
+
+					# run script to start microsocks
+					source /home/nobody/microsocks.sh
+
+				fi
 
 			fi
 
@@ -62,23 +70,31 @@ while true; do
 
 	else
 
-		# check if privoxy is running, if not then start via privoxy.sh
-		if ! pgrep -fa "/usr/bin/privoxy" > /dev/null; then
+		if [[ "${ENABLE_PRIVOXY}" == "yes" ]]; then
 
-			echo "[info] Privoxy not running"
+			# check if privoxy is running, if not then start via privoxy.sh
+			if ! pgrep -fa "/usr/bin/privoxy" > /dev/null; then
 
-			# run script to start privoxy
-			source /home/nobody/privoxy.sh
+				echo "[info] Privoxy not running"
+
+				# run script to start privoxy
+				source /home/nobody/privoxy.sh
+
+			fi
 
 		fi
 
-		# check if microsocks is running, if not then start via microsocks.sh
-		if ! pgrep -fa "/usr/local/bin/microsocks" > /dev/null; then
+		if [[ "${ENABLE_SOCKS}" == "yes" ]]; then
 
-			echo "[info] microsocks not running"
+			# check if microsocks is running, if not then start via microsocks.sh
+			if ! pgrep -fa "/usr/local/bin/microsocks" > /dev/null; then
 
-			# run script to start microsocks
-			source /home/nobody/microsocks.sh
+				echo "[info] microsocks not running"
+
+				# run script to start microsocks
+				source /home/nobody/microsocks.sh
+
+			fi
 
 		fi
 
