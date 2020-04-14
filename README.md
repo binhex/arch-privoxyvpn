@@ -33,6 +33,7 @@ docker run -d \
     -e SOCKS_PASS=<socks password> \
     -e ENABLE_SOCKS=<yes|no> \
     -e ENABLE_PRIVOXY=<yes|no> \
+    -e ADDITIONAL_PORTS=<port number(s)> \
     -e DEBUG=<true|false> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
@@ -71,6 +72,7 @@ docker run -d \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
     -e ENABLE_PRIVOXY=yes \
+    -e ADDITIONAL_PORTS=1234 \
     -e DEBUG=false \
     -e UMASK=000 \
     -e PUID=0 \
@@ -107,6 +109,7 @@ docker run -d \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
     -e ENABLE_PRIVOXY=yes \
+    -e ADDITIONAL_PORTS=1234 \
     -e DEBUG=false \
     -e UMASK=000 \
     -e PUID=0 \
