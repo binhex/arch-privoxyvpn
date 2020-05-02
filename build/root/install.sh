@@ -318,6 +318,22 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 
 fi
 
+	export PLEX_NAT_PORT=$(echo "${PLEX_NAT_PORT}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	if [[ ! -z "${PLEX_NAT_PORT}" ]]; then
+		echo "[info] PLEX_NAT_PORT defined as '${PLEX_NAT_PORT}'" | ts '%Y-%m-%d %H:%M:%.S'
+	else
+		echo "[warn] PLEX_NAT_PORT not defined (via -e PLEX_NAT_PORT), defaulting to standard Plex Port (32400)" | ts '%Y-%m-%d %H:%M:%.S'
+		export PLEX_NAT_PORT="32400"
+	fi
+	
+	export PLEX_NAT_PORT_VPN=$(echo "${PLEX_NAT_PORT_VPN}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+	if [[ ! -z "${PLEX_NAT_PORT_VPN}" ]]; then
+		echo "[info] PLEX_NAT_PORT_VPN defined as '${PLEX_NAT_PORT_VPN}'" | ts '%Y-%m-%d %H:%M:%.S'
+	else
+		echo "[warn] PLEX_NAT_PORT_VPN not defined (via -e PLEX_NAT_PORT_VPN), defaulting to 0000" | ts '%Y-%m-%d %H:%M:%.S'
+		export PLEX_NAT_PORT="0000"
+	fi
+
 EOF
 
 # replace env vars placeholder string with contents of file (here doc)
