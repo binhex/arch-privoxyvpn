@@ -327,5 +327,5 @@ sed -i '/# ENVVARS_PLACEHOLDER/{
 }' /usr/local/bin/init.sh
 rm /tmp/envvars_heredoc
 
-# call cleanup script
+### call cleanup script
 cleanup.sh
