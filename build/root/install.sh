@@ -54,12 +54,8 @@ source aur.sh
 # github release - microsocks
 ####
 
-# download microsocks
-github.sh -df github-microsocks.zip -dp "/tmp" -ep "/tmp/extracted" -go "rofl0r" -gr "microsocks" -rt "source"
-
-# make and install microsocks
-cd /tmp/extracted/microsocks*
-make install
+# download and compile microsocks
+github.sh --install-path "/tmp/compile" --github-owner "rofl0r" --github-repo "microsocks" --compile-src 'make install'
 
 # container perms
 ####
