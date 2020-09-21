@@ -51,6 +51,12 @@ echo "--------------------"
 ip route
 echo "--------------------"
 
+# split comma separated string into array from VPN_REMOTE_PROTOCOL env var
+IFS=',' read -ra vpn_remote_protocol_list <<< "${VPN_REMOTE_PROTOCOL}"
+
+# split comma separated string into array from VPN_REMOTE_PORT env var
+IFS=',' read -ra vpn_remote_port_list <<< "${VPN_REMOTE_PORT}"
+
 # input iptable rules
 ###
 
@@ -63,8 +69,17 @@ ip6tables -P INPUT DROP 1>&- 2>&-
 # accept input to/from docker containers (172.x range is internal dhcp)
 iptables -A INPUT -s "${docker_network_cidr}" -d "${docker_network_cidr}" -j ACCEPT
 
-# accept input to vpn gateway
-iptables -A INPUT -i "${docker_interface}" -p $VPN_PROTOCOL --sport $VPN_PORT -j ACCEPT
+# iterate over array and add all remote vpn ports and protocols
+for index in "${!vpn_remote_port_list[@]}"; do
+
+	# note grep -e is required to indicate no flags follow to prevent -A from being incorrectly picked up
+	rule_exists=$(iptables -S | grep -e "-A INPUT -i "${docker_interface}" -p "${vpn_remote_protocol_list[$index]}" -m "${vpn_remote_protocol_list[$index]}" --sport "${vpn_remote_port_list[$index]}" -j ACCEPT")
+	if [[ -z "${rule_exists}" ]]; then
+		# accept input to vpn gateway
+		iptables -A INPUT -i "${docker_interface}" -p "${vpn_remote_protocol_list[$index]}" --sport "${vpn_remote_port_list[$index]}" -j ACCEPT
+	fi
+
+done
 
 # additional port list for scripts or container linking
 if [[ ! -z "${ADDITIONAL_PORTS}" ]]; then
@@ -129,8 +144,17 @@ ip6tables -P OUTPUT DROP 1>&- 2>&-
 # accept output to/from docker containers (172.x range is internal dhcp)
 iptables -A OUTPUT -s "${docker_network_cidr}" -d "${docker_network_cidr}" -j ACCEPT
 
-# accept output from vpn gateway
-iptables -A OUTPUT -o "${docker_interface}" -p $VPN_PROTOCOL --dport $VPN_PORT -j ACCEPT
+# iterate over array and add all remote vpn ports and protocols
+for index in "${!vpn_remote_port_list[@]}"; do
+
+	# note grep -e is required to indicate no flags follow to prevent -A from being incorrectly picked up
+	rule_exists=$(iptables -S | grep -e "-A OUTPUT -o "${docker_interface}" -p "${vpn_remote_protocol_list[$index]}" -m "${vpn_remote_protocol_list[$index]}" --dport "${vpn_remote_port_list[$index]}" -j ACCEPT")
+	if [[ -z "${rule_exists}" ]]; then
+		# accept output from vpn gateway
+		iptables -A OUTPUT -o "${docker_interface}" -p "${vpn_remote_protocol_list[$index]}" --dport "${vpn_remote_port_list[$index]}" -j ACCEPT
+	fi
+
+done
 
 # additional port list for scripts or container linking
 if [[ ! -z "${ADDITIONAL_PORTS}" ]]; then
