@@ -5,6 +5,7 @@ docker_interface=$(ip -4 route ls | grep default | xargs | grep -o -P '[^\s]+$')
 if [[ "${DEBUG}" == "true" ]]; then
 	echo "[debug] Docker interface defined as ${docker_interface}"
 fi
+
 # identify ip for local gateway (eth0)
 default_gateway=$(ip route show default | awk '/default/ {print $3}')
 echo "[info] Default route for container is ${default_gateway}"
