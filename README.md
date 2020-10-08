@@ -7,7 +7,11 @@
 
 **Description**
 
-Privoxy is a free non-caching web proxy with filtering capabilities for enhancing privacy, manipulating cookies and modifying web page data and HTTP headers before the page is rendered by the browser. Privoxy is a "privacy enhancing proxy", filtering web pages and removing advertisements. Privoxy can be customized by users, for both stand-alone systems and multi-user networks. Privoxy can be chained to other proxies and is frequently used in combination with Squid and can be used to bypass Internet censorship. microsocks is a SOCKS5 service that you can run on your remote boxes to tunnel connections through them, if for some reason SSH doesn't cut it for you. It's very lightweight, and very light on resources too: for every client, a thread with a stack size of 8KB is spawned. the main process basically doesn't consume any resources at all. The only limits are the amount of file descriptors and the RAM.
+Privoxy is a free non-caching web proxy with filtering capabilities for enhancing privacy, manipulating cookies and modifying web page data and HTTP headers before the page is rendered by the browser. Privoxy is a "privacy enhancing proxy", filtering web pages and removing advertisements. Privoxy can be customized by users, for both stand-alone systems and multi-user networks. Privoxy can be chained to other proxies and is frequently used in combination with Squid and can be used to bypass Internet censorship.  
+
+microsocks is a SOCKS5 service that you can run on your remote boxes to tunnel connections through them, if for some reason SSH doesn't cut it for you. It's very lightweight, and very light on resources too: for every client, a thread with a stack size of 8KB is spawned. the main process basically doesn't consume any resources at all. The only limits are the amount of file descriptors and the RAM.  
+
+This Docker includes OpenVPN and Wireguard to ensure a secure and private connection to the Internet, including use of iptables to prevent IP leakage when the tunnel is down.
 
 **Build notes**
 
