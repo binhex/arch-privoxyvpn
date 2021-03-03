@@ -41,7 +41,8 @@ docker run -d \
     -e SOCKS_PASS=<socks password> \
     -e ENABLE_SOCKS=<yes|no> \
     -e ENABLE_PRIVOXY=<yes|no> \
-    -e ADDITIONAL_PORTS=<port number(s)> \
+    -e VPN_INPUT_PORTS=<port number(s)> \
+    -e VPN_OUTPUT_PORTS=<port number(s)> \
     -e DEBUG=<true|false> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
@@ -81,7 +82,8 @@ docker run -d \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
     -e ENABLE_PRIVOXY=yes \
-    -e ADDITIONAL_PORTS=1234 \
+    -e VPN_INPUT_PORTS=1234 \
+    -e VPN_OUTPUT_PORTS=5678 \
     -e DEBUG=false \
     -e UMASK=000 \
     -e PUID=0 \
@@ -119,7 +121,8 @@ docker run -d \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
     -e ENABLE_PRIVOXY=yes \
-    -e ADDITIONAL_PORTS=1234 \
+    -e VPN_INPUT_PORTS=1234 \
+    -e VPN_OUTPUT_PORTS=5678 \
     -e DEBUG=false \
     -e UMASK=000 \
     -e PUID=0 \
@@ -127,6 +130,9 @@ docker run -d \
     binhex/arch-privoxyvpn
 ```
 &nbsp;
+
+**IMPORTANT**  
+Please note 'VPN_INPUT_PORTS' is **NOT** to define the incoming port for the VPN, this environment variable is used to define port(s) you want to allow in to the VPN network when network binding multiple containers together, configuring this incorrectly with the VPN incoming port COULD leak to IP leakage, you have been warned.
 
 **OpenVPN**  
 Please note this Docker image does not include the required OpenVPN configuration file and certificates. These will typically be downloaded from your VPN providers website (look for OpenVPN configuration files), and generally are zipped.
