@@ -121,8 +121,8 @@ if [[ "${ENABLE_SOCKS}" == "yes" ]]; then
 	if [[ ! -z "${SOCKS_USER}" ]]; then
 		echo "[info] SOCKS_USER defined as '${SOCKS_USER}'" | ts '%Y-%m-%d %H:%M:%.S'
 	else
-		echo "[warn] SOCKS_USER not defined (via -e SOCKS_USER), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
-		export SOCKS_USER="admin"
+		echo "[warn] SOCKS_USER not defined (via -e SOCKS_USER), disabling authentication for microsocks" | ts '%Y-%m-%d %H:%M:%.S'
+		export SOCKS_USER=""
 	fi
 
 	export SOCKS_PASS=$(echo "${SOCKS_PASS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
