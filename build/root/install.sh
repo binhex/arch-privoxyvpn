@@ -116,23 +116,22 @@ else
 fi
 
 if [[ "${ENABLE_SOCKS}" == "yes" ]]; then
-
 	export SOCKS_USER=$(echo "${SOCKS_USER}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 	if [[ ! -z "${SOCKS_USER}" ]]; then
 		echo "[info] SOCKS_USER defined as '${SOCKS_USER}'" | ts '%Y-%m-%d %H:%M:%.S'
-	else
-		echo "[warn] SOCKS_USER not defined (via -e SOCKS_USER), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
-		export SOCKS_USER="admin"
-	fi
 
-	export SOCKS_PASS=$(echo "${SOCKS_PASS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
-	if [[ ! -z "${SOCKS_PASS}" ]]; then
-		echo "[info] SOCKS_PASS defined as '${SOCKS_PASS}'" | ts '%Y-%m-%d %H:%M:%.S'
+		export SOCKS_PASS=$(echo "${SOCKS_PASS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+		if [[ ! -z "${SOCKS_PASS}" ]]; then
+			echo "[info] SOCKS_PASS defined as '${SOCKS_PASS}'" | ts '%Y-%m-%d %H:%M:%.S'
+		else
+			echo "[warn] SOCKS_PASS not defined (via -e SOCKS_PASS), defaulting to 'socks'" | ts '%Y-%m-%d %H:%M:%.S'
+			export SOCKS_PASS="socks"
+		fi
 	else
-		echo "[warn] SOCKS_PASS not defined (via -e SOCKS_PASS), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
-		export SOCKS_PASS="socks"
+		echo "[warn] SOCKS_USER not defined (via -e SOCKS_USER), microsocks running without authentication" | ts '%Y-%m-%d %H:%M:%.S'
+		export SOCKS_USER=""
+		export SOCKS_PASS=""		
 	fi
-
 fi
 
 export APPLICATION="privoxy"
