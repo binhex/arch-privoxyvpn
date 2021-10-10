@@ -24,9 +24,6 @@ RUN chmod +x /root/*.sh /home/nobody/*.sh && \
 # docker settings
 #################
 
-# map /config to host defined config path (used to store configuration from app)
-VOLUME /config
-
 # expose port for privoxy
 EXPOSE 8118
 
