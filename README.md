@@ -77,7 +77,7 @@ docker run -d \
     -e VPN_PROV=pia \
     -e VPN_CLIENT=openvpn \
     -e LAN_NETWORK=192.168.1.0/24 \
-    -e NAME_SERVERS=209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1 \
+    -e NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1 \
     -e SOCKS_USER=admin \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
@@ -116,7 +116,7 @@ docker run -d \
     -e VPN_PROV=airvpn \
     -e VPN_CLIENT=openvpn \
     -e LAN_NETWORK=192.168.1.0/24 \
-    -e NAME_SERVERS=209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1 \
+    -e NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1 \
     -e SOCKS_USER=admin \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
