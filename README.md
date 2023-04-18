@@ -2,6 +2,7 @@
 
 [Privoxy](http://www.privoxy.org/)<br/>
 [microsocks](https://github.com/rofl0r/microsocks)<br/>
+[FlareSolverr](https://github.com/FlareSolverr/FlareSolver)<br/>
 [OpenVPN](https://openvpn.net/)<br/>
 [WireGuard](https://www.wireguard.com/)
 
@@ -11,12 +12,15 @@ Privoxy is a free non-caching web proxy with filtering capabilities for enhancin
 
 microsocks is a SOCKS5 service that you can run on your remote boxes to tunnel connections through them, if for some reason SSH doesn't cut it for you. It's very lightweight, and very light on resources too: for every client, a thread with a stack size of 8KB is spawned. the main process basically doesn't consume any resources at all. The only limits are the amount of file descriptors and the RAM.<br/>
 
+FlareSolverr starts a proxy server, and it waits for user requests in an idle state using few resources. When some request arrives, it uses Selenium with the undetected-chromedriver to create a web browser (Chrome). It opens the URL with user parameters and waits until the Cloudflare challenge is solved (or timeout). The HTML code and the cookies are sent back to the user, and those cookies can be used to bypass Cloudflare using other HTTP clients.<br/>
+
 This Docker includes OpenVPN and WireGuard to ensure a secure and private connection to the Internet, including use of iptables to prevent IP leakage when the tunnel is down.
 
 **Build notes**
 
 Latest stable Privoxy release from Arch Linux repo.<br/>
 Latest stable microsocks release from GitHub.<br/>
+Latest stable FlareSolverr release from Arch User repo.<br/>
 Latest stable OpenVPN release from Arch Linux repo.<br/>
 Latest stable WireGuard release from Arch Linux repo.
 
@@ -26,6 +30,7 @@ docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
     -p 9118:9118 \
+    -p 8191:8191 \
     --name=<container name> \
     -v <path for config files>:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -40,6 +45,7 @@ docker run -d \
     -e SOCKS_USER=<socks username> \
     -e SOCKS_PASS=<socks password> \
     -e ENABLE_SOCKS=<yes|no> \
+    -e ENABLE_FLARESOLVERR=<yes|no> \
     -e ENABLE_PRIVOXY=<yes|no> \
     -e VPN_INPUT_PORTS=<port number(s)> \
     -e VPN_OUTPUT_PORTS=<port number(s)> \
@@ -62,12 +68,17 @@ Please replace all user variables in the above command defined by <> with the co
 
 default credentials: admin/socks
 
+**Access FlareSolverr**
+
+`<host ip>:8191`
+
 **PIA example**
 ```
 docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
     -p 9118:9118 \
+    -p 8191:8191 \
     --name=privoxyvpn \
     -v /root/docker/config:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -81,6 +92,7 @@ docker run -d \
     -e SOCKS_USER=admin \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
+    -e ENABLE_FLARESOLVERR=yes \
     -e ENABLE_PRIVOXY=yes \
     -e VPN_INPUT_PORTS=1234 \
     -e VPN_OUTPUT_PORTS=5678 \
@@ -109,6 +121,7 @@ docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
     -p 9118:9118 \
+    -p 8191:8191 \
     --name=privoxyvpn \
     -v /root/docker/config:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -120,6 +133,7 @@ docker run -d \
     -e SOCKS_USER=admin \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
+    -e ENABLE_FLARESOLVERR=yes \
     -e ENABLE_PRIVOXY=yes \
     -e VPN_INPUT_PORTS=1234 \
     -e VPN_OUTPUT_PORTS=5678 \
