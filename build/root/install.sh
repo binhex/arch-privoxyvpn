@@ -39,7 +39,7 @@ fi
 ####
 
 # define aur packages
-aur_packages=""
+aur_packages="flaresolverr"
 
 # call aur install script (arch user repo)
 source aur.sh
@@ -116,6 +116,14 @@ if [[ ! -z "${ENABLE_SOCKS}" ]]; then
 else
 	echo "[warn] ENABLE_SOCKS not defined (via -e ENABLE_SOCKS), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
 	export ENABLE_SOCKS="no"
+fi
+
+export ENABLE_FLARESOLVERR=$(echo "${ENABLE_FLARESOLVERR}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${ENABLE_FLARESOLVERR}" ]]; then
+	echo "[info] ENABLE_FLARESOLVERR defined as '${ENABLE_FLARESOLVERR}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[warn] ENABLE_FLARESOLVERR not defined (via -e ENABLE_FLARESOLVERR), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
+	export ENABLE_FLARESOLVERR="no"
 fi
 
 export ENABLE_PRIVOXY=$(echo "${ENABLE_PRIVOXY}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')

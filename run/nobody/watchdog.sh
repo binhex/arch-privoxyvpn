@@ -6,6 +6,7 @@ while true; do
 	# reset triggers to negative values
 	privoxy_running="false"
 	microsocks_running="false"
+	flaresolverr_running="false"
 	ip_change="false"
 
 	if [[ "${VPN_ENABLED}" == "yes" ]]; then
@@ -77,6 +78,29 @@ while true; do
 
 			fi
 
+			if [[ "${ENABLE_FLARESOLVERR}" == "yes" ]]; then
+
+				# check if flaresolverr is running, if not then skip shutdown of process
+				if ! pgrep -fa "/usr/local/bin/flaresolverr" > /dev/null; then
+
+					echo "[info] flaresolverr not running"
+
+				else
+
+					# mark flaresolverr as running
+					flaresolverr_running="true"
+
+				fi
+
+				if [[ "${flaresolverr_running}" == "false" ]]; then
+
+					# run script to start flaresolverr
+					source /home/nobody/flaresolverr.sh
+
+				fi
+
+			fi
+
 		else
 
 			echo "[warn] VPN IP not detected, VPN tunnel maybe down"
@@ -108,6 +132,20 @@ while true; do
 
 				# run script to start microsocks
 				source /home/nobody/microsocks.sh
+
+			fi
+
+		fi
+
+		if [[ "${ENABLE_FLARESOLVERR}" == "yes" ]]; then
+
+			# check if flaresolverr is running, if not then start via flaresolverr.sh
+			if ! pgrep -fa "/usr/local/bin/flaresolverr" > /dev/null; then
+
+				echo "[info] flaresolverr not running"
+
+				# run script to start flaresolverr
+				source /home/nobody/flaresolverr.sh
 
 			fi
 

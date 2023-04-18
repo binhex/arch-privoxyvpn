@@ -30,6 +30,9 @@ RUN chmod +x /root/*.sh /home/nobody/*.sh && \
 # expose port for privoxy
 EXPOSE 8118
 
+# expose port for flaresolverr
+EXPOSE 8191
+
 # set permissions
 #################
 
