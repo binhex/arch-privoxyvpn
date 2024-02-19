@@ -41,6 +41,7 @@ docker run -d \
     -e SOCKS_PASS=<socks password> \
     -e ENABLE_SOCKS=<yes|no> \
     -e ENABLE_PRIVOXY=<yes|no> \
+    -e ENABLE_STARTUP_SCRIPTS=<yes|no> \
     -e VPN_INPUT_PORTS=<port number(s)> \
     -e VPN_OUTPUT_PORTS=<port number(s)> \
     -e DEBUG=<true|false> \
@@ -82,6 +83,7 @@ docker run -d \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
     -e ENABLE_PRIVOXY=yes \
+    -e ENABLE_STARTUP_SCRIPTS=no \
     -e VPN_INPUT_PORTS=1234 \
     -e VPN_OUTPUT_PORTS=5678 \
     -e DEBUG=false \
@@ -121,6 +123,7 @@ docker run -d \
     -e SOCKS_PASS=socks \
     -e ENABLE_SOCKS=yes \
     -e ENABLE_PRIVOXY=yes \
+    -e ENABLE_STARTUP_SCRIPTS=no \
     -e VPN_INPUT_PORTS=1234 \
     -e VPN_OUTPUT_PORTS=5678 \
     -e DEBUG=false \
