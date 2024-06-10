@@ -26,7 +26,7 @@ fi
 ####
 
 # define pacman packages
-pacman_packages="base-devel privoxy"
+pacman_packages=""
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -41,12 +41,6 @@ aur_packages=""
 
 # call aur install script (arch user repo)
 source aur.sh
-
-# github release - microsocks
-####
-
-# download and compile microsocks
-github.sh --install-path "/tmp/compile" --github-owner "rofl0r" --github-repo "microsocks" --compile-src 'make install'
 
 # container perms
 ####
@@ -107,48 +101,7 @@ rm /tmp/permissions_heredoc
 ####
 
 cat <<'EOF' > /tmp/envvars_heredoc
-
-export ENABLE_SOCKS=$(echo "${ENABLE_SOCKS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
-if [[ ! -z "${ENABLE_SOCKS}" ]]; then
-	echo "[info] ENABLE_SOCKS defined as '${ENABLE_SOCKS}'" | ts '%Y-%m-%d %H:%M:%.S'
-else
-	echo "[warn] ENABLE_SOCKS not defined (via -e ENABLE_SOCKS), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
-	export ENABLE_SOCKS="no"
-fi
-
-export ENABLE_PRIVOXY=$(echo "${ENABLE_PRIVOXY}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
-if [[ ! -z "${ENABLE_PRIVOXY}" ]]; then
-	echo "[info] ENABLE_PRIVOXY defined as '${ENABLE_PRIVOXY}'" | ts '%Y-%m-%d %H:%M:%.S'
-else
-	echo "[warn] ENABLE_PRIVOXY not defined (via -e ENABLE_PRIVOXY), defaulting to 'no'" | ts '%Y-%m-%d %H:%M:%.S'
-	export ENABLE_PRIVOXY="no"
-fi
-
-if [[ "${ENABLE_SOCKS}" == "yes" ]]; then
-
-	export SOCKS_USER=$(echo "${SOCKS_USER}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
-	if [[ ! -z "${SOCKS_USER}" ]]; then
-		echo "[info] SOCKS_USER defined as '${SOCKS_USER}'" | ts '%Y-%m-%d %H:%M:%.S'
-	else
-		echo "[warn] SOCKS_USER not defined (via -e SOCKS_USER), disabling authentication for microsocks" | ts '%Y-%m-%d %H:%M:%.S'
-		export SOCKS_USER=""
-	fi
-
-	if [[ -n "${SOCKS_USER}" ]]; then
-
-		export SOCKS_PASS=$(echo "${SOCKS_PASS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
-		if [[ ! -z "${SOCKS_PASS}" ]]; then
-			echo "[info] SOCKS_PASS defined as '${SOCKS_PASS}'" | ts '%Y-%m-%d %H:%M:%.S'
-		else
-			echo "[warn] SOCKS_PASS not defined (via -e SOCKS_PASS), defaulting to 'socks'" | ts '%Y-%m-%d %H:%M:%.S'
-			export SOCKS_PASS="socks"
-		fi
-
-	fi
-fi
-
 export APPLICATION="privoxy"
-
 EOF
 
 # replace env vars placeholder string with contents of file (here doc)
