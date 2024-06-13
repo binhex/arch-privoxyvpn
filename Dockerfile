@@ -27,12 +27,6 @@ ADD run/nobody/*.sh /home/nobody/
 RUN chmod +x /root/*.sh /home/nobody/*.sh && \
 	/bin/bash /root/install.sh "${RELEASETAG}" "${TARGETARCH}"
 
-# docker settings
-#################
-
-# expose port for privoxy
-EXPOSE 8118
-
 # set permissions
 #################
 

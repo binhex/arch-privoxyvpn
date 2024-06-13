@@ -24,11 +24,13 @@ Latest stable WireGuard release from Arch Linux repo.
 
 ## Usage
 
-```bash
+```text
 docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
     -p 9118:9118 \
+    -p 58946:58946 \
+    -p 58946:58946/udp \
     --name=<container name> \
     -v <path for config files>:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -75,6 +77,8 @@ docker run -d \
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
     -p 9118:9118 \
+    -p 58946:58946 \
+    -p 58946:58946/udp \
     --name=privoxyvpn \
     -v /root/docker/config:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -100,10 +104,6 @@ docker run -d \
     -e PGID=0 \
     binhex/arch-privoxyvpn
 ```
-
-## IMPORTANT
-
-Please note `VPN_INPUT_PORTS` is **NOT** to define the incoming port for the VPN, this environment variable is used to define port(s) you want to allow in to the VPN network when network binding multiple containers together, configuring this incorrectly with the VPN provider assigned incoming port COULD result in IP leakage, you have been warned!.
 
 ## OpenVPN
 
@@ -146,6 +146,10 @@ The list of default NS providers in the above example(s) is as follows:-
 84.200.x.x = DNS Watch<br/>
 37.235.x.x = FreeDNS<br/>
 1.x.x.x = Cloudflare
+
+---
+**IMPORTANT**<br/>
+Please note `VPN_INPUT_PORTS` is **NOT** to define the incoming port for the VPN, this environment variable is used to define port(s) you want to allow in to the VPN network when network binding multiple containers together, configuring this incorrectly with the VPN provider assigned incoming port COULD result in IP leakage, you have been warned!.
 
 ---
 User ID (PUID) and Group ID (PGID) can be found by issuing the following command for the user you want to run the container as:-
