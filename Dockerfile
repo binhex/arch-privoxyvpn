@@ -1,6 +1,6 @@
 FROM binhex/arch-int-vpn:latest
-LABEL org.opencontainers.image.authors = "binhex"
-LABEL org.opencontainers.image.source = "https://github.com/binhex/arch-privoxyvpn"
+LABEL org.opencontainers.image.authors="binhex"
+LABEL org.opencontainers.image.source="https://github.com/binhex/arch-privoxyvpn"
 
 # release tag name from buildx arg
 ARG RELEASETAG
