@@ -9,8 +9,6 @@ RELEASETAG="${1}"
 # target arch from buildx arg
 TARGETARCH="${2}"
 
-echo "${TARGETARCH}"
-exit 0
 if [[ -z "${RELEASETAG}" ]]; then
 	echo "[warn] Release tag name from build arg is empty, exiting script..."
 	exit 1
