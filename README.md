@@ -91,7 +91,7 @@ docker run -d \
     -e NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1 \
     -e ENABLE_STARTUP_SCRIPTS=no \
     -e ENABLE_PRIVOXY=yes \
-    -e STRICT_PORT_FORWARD=yes \
+    -e STRICT_PORT_FORWARD=no \
     -e USERSPACE_WIREGUARD=no \
     -e ENABLE_SOCKS=yes \
     -e SOCKS_USER=admin \
