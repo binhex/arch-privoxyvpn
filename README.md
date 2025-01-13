@@ -88,7 +88,7 @@ docker run -d \
     -e VPN_PROV=pia \
     -e VPN_CLIENT=openvpn \
     -e LAN_NETWORK=192.168.1.0/24 \
-    -e NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1 \
+    -e NAME_SERVERS=1.1.1.1,1.0.0.1 \
     -e ENABLE_STARTUP_SCRIPTS=no \
     -e ENABLE_PRIVOXY=yes \
     -e STRICT_PORT_FORWARD=no \
@@ -143,8 +143,6 @@ to
 Due to Google and OpenDNS supporting EDNS Client Subnet it is recommended NOT to use either of these NS providers.
 The list of default NS providers in the above example(s) is as follows:-
 
-84.200.x.x = DNS Watch<br/>
-37.235.x.x = FreeDNS<br/>
 1.x.x.x = Cloudflare
 
 ---
