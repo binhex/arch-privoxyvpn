@@ -97,7 +97,6 @@ default credentials: admin/socks
 
 ```bash
 docker run -d \
-
     --cap-add=NET_ADMIN \
     -p 8118:8118 \
     -p 9118:9118 \
@@ -126,9 +125,7 @@ docker run -d \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \
-
     binhex/arch-privoxyvpn
-
 ```
 
 ## OpenVPN
