@@ -31,7 +31,7 @@ if [[ -z "${TARGETARCH}" ]]; then
 fi
 
 # write APPNAME and RELEASETAG to file to record the app name and release tag used to build the image
-echo -e "export APPNAME=${APPNAME}\nexport IMAGE_RELEASE_TAG=${RELEASETAG}" >> '/etc/image-build-info'
+echo -e "export APPNAME=${APPNAME}\nexport IMAGE_RELEASE_TAG=${RELEASETAG}\n" >> '/etc/image-build-info'
 
 # note do NOT download build scripts - inherited from int script with envvars common defined
 
