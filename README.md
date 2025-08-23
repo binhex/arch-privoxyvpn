@@ -74,6 +74,7 @@ docker run -d \
     -e DEBUG=<true|false> \
     -e HEALTHCHECK_COMMAND=<command> \
     -e HEALTHCHECK_ACTION=<action> \
+    -e HEALTHCHECK_HOSTNAME=<hostname> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
