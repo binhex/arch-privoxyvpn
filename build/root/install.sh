@@ -76,27 +76,9 @@ install_paths=$(echo "${install_paths}" | tr ',' ' ')
 # set permissions for container during build - Do NOT double quote variable for install_paths otherwise this will wrap space separated paths as a single string
 chmod -R 775 ${install_paths}
 
-# create file with contents of here doc, note EOF is NOT quoted to allow us to expand current variable 'install_paths'
-# we use escaping to prevent variable expansion for PUID and PGID, as we want these expanded at runtime of init.sh
+# In install.sh heredoc, replace the chown section:
 cat <<EOF > /tmp/permissions_heredoc
-
-# get previous puid/pgid (if first run then will be empty string)
-previous_puid=\$(cat "/root/puid" 2>/dev/null || true)
-previous_pgid=\$(cat "/root/pgid" 2>/dev/null || true)
-
-# if first run (no puid or pgid files in /tmp) or the PUID or PGID env vars are different
-# from the previous run then re-apply chown with current PUID and PGID values.
-if [[ ! -f "/root/puid" || ! -f "/root/pgid" || "\${previous_puid}" != "\${PUID}" || "\${previous_pgid}" != "\${PGID}" ]]; then
-
-	# set permissions inside container - Do NOT double quote variable for install_paths otherwise this will wrap space separated paths as a single string
-	chown -R "\${PUID}":"\${PGID}" ${install_paths}
-
-fi
-
-# write out current PUID and PGID to files in /root (used to compare on next run)
-echo "\${PUID}" > /root/puid
-echo "\${PGID}" > /root/pgid
-
+install_paths="${install_paths}"
 EOF
 
 # replace permissions placeholder string with contents of file (here doc)
